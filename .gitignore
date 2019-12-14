@@ -1,3 +1,4 @@
 #ignore image file
 /images
 *.TIFF
+!a.TIFF
