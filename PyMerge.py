@@ -103,13 +103,13 @@ def main():
 	for rowCount in range(0, rowCol):
 		
 		if (coordinateList[rowCount][0] == 999):
-			img = imageList[coordinateList[1][0]]
+			img = cv.imread('a.TIFF')
 		else:
 			img = imageList[coordinateList[rowCount][0]]
 			print('test', coordinateList[rowCount][0])
 		for i in range(1, rowCol):
 			if (coordinateList[rowCount][i] == 999):
-				imgNew = imageList[coordinateList[1][0]]
+				imgNew = cv.imread('a.TIFF')
 			else:
 				imgNew = imageList[coordinateList[rowCount][i]]
 			img = cv.hconcat([img,imgNew])
@@ -132,7 +132,9 @@ def main():
 	# cv.waitKey(0)
 
 	cv.imwrite('output/image.TIFF',img) 
-
+	print(coordinateList[1][1])
+	print(coordinateList[1][3])
+	print(coordinateList[3][1])
 main()
 # im = Image.open('images/MDPC501_191112140001_A01f00d0.TIFF')
 # im.show()
