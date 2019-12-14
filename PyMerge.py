@@ -1,21 +1,34 @@
 ### Written By Youchao Wang, yw479
 ### 2019.12.14
-
+import os
+import shutil
 import math
 import glob
 import numpy as np
 import cv2 as cv
 
-# Please set the following paths at your ease
-PATH = 'test/'
+# Please set the following parameters at your ease
+PATH = 'images/'
 OUTPUT_PATH = 'output/'
+PICTURE_NUMBER = 'A02'
+PICTURE_CHANNEL = 'd1'
+
+# Initializing environment
+
+def initialize():
+	if not os.path.exists('output/'):
+		os.makedirs('output/')
+	if not os.path.exists(PICTURE_NUMBER + PICTURE_CHANNEL + '/'):
+		os.makedirs(PICTURE_NUMBER + PICTURE_CHANNEL + '/')
+	for filename in glob.glob(PATH + '*' + PICTURE_NUMBER + '*' + PICTURE_CHANNEL + '.TIFF'):
+		shutil.copy(filename, PICTURE_NUMBER + PICTURE_CHANNEL + '/')
 
 def read_image(PATH):
 	# Read all the images
 	imageList = []
 
 	# Assuming TIFF format
-	for filename in glob.glob(PATH + '*.TIFF'):
+	for filename in glob.glob(PICTURE_NUMBER + PICTURE_CHANNEL + '/*.TIFF'):
 		im = cv.imread(filename)
 		imageList.append(im)
 
@@ -32,24 +45,27 @@ def process_image(imageList):
 	coordinateList = [[None] * rowCol for i in range(rowCol)]
 
 	direction = 'l'
-	left, bottom, right, up = 1, 1, 2, 2
+	left, down, right, up = 1, 1, 2, 2
 	tmp = 0
 	j = 0
 
 	for i in range(1, totalSize):
 		if (X == 0 and Y == 0) or (X == 0 and Y == (rowCol - 1) ) or (X == (rowCol - 1) and Y == (rowCol - 1) ) or (X == (rowCol - 1) and Y == 0 ):
 			j = j - 1
-			coordinateList[Y][X] = 999
+			coordinateList[Y][X] = 999 # this is a magic number, better use enum
 		else:
 			coordinateList[Y][X] = j
 		
 		j = j + 1
 		# print(X, Y)
+
+		# Algorithm to generate mapping
+		# l for left, d for down, r for right, u for up
 		if direction == 'l':
 			X = X - 1
 			tmp += 1
 			if (tmp == left):
-				direction = 'b'
+				direction = 'd'
 				left = left + 2
 				tmp = 0
 		elif direction == 'u':
@@ -66,15 +82,15 @@ def process_image(imageList):
 				direction = 'u'
 				right = right + 2
 				tmp = 0
-		elif direction == 'b':
+		elif direction == 'd':
 			Y = Y + 1
 			tmp += 1
-			if (tmp == bottom):
+			if (tmp == down):
 				direction = 'r'
-				bottom = bottom + 2
+				down = down + 2
 				tmp = 0
 
-	coordinateList[Y][X] = 999
+	coordinateList[Y][X] = 999 # make sure the last corner has been accounted
 
 	# for i in coordinateList:
 	# 	for tmp in i:
@@ -84,6 +100,8 @@ def process_image(imageList):
 	return coordinateList
 
 def main():
+
+	initialize()
 
 	print('Loading images')
 	imageList = read_image(PATH)
@@ -128,7 +146,7 @@ def main():
 		# print(heightTest, widthTest)
 
 	print('Generating image')
-	cv.imwrite(OUTPUT_PATH + 'image.TIFF', img) 
+	cv.imwrite(OUTPUT_PATH + PICTURE_NUMBER + PICTURE_CHANNEL + '.TIFF', img) 
 
 	print('Complete')
 
