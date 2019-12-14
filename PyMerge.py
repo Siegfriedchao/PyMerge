@@ -135,6 +135,5 @@ def main():
 	print(coordinateList[1][1])
 	print(coordinateList[1][3])
 	print(coordinateList[3][1])
+	
 main()
-# im = Image.open('images/MDPC501_191112140001_A01f00d0.TIFF')
-# im.show()
