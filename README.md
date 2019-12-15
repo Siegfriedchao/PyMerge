@@ -5,6 +5,12 @@ An automatic python script to merge images.
 You will need to install OpenCV for python. Use `pip` to install the package.
 
 ```
+	pip install --user opencv-python
+```
+
+## How to use
+
+```
 	# Please set the following parameters at your ease
 	PATH = 'images/'
 	OUTPUT_PATH = 'output/'

@@ -7,11 +7,11 @@ import glob
 import numpy as np
 import cv2 as cv
 
-# Please set the following parameters at your ease
+# Please set the following parameters
 PATH = 'images/'
 OUTPUT_PATH = 'output/'
-PICTURE_NUMBER = 'A02'
-PICTURE_CHANNEL = 'd1'
+PICTURE_NUMBER = 'A01'
+PICTURE_CHANNEL = 'd0'
 
 # Initializing environment
 
@@ -35,13 +35,14 @@ def read_image(PATH):
 	return imageList
 
 def process_image(imageList):
-	# build up a concat map, assuming a sqaure layout
+	# Build up a concat map, assuming a sqaure layout
+	# This is for subimages without perfect square
 	totalSize = len(imageList) + 4
 	rowCol = int(math.sqrt(totalSize))
-	test = int(rowCol // 2)
-	# print(test)
-	X = test
-	Y = test
+	centre = int(rowCol // 2)
+	# print(centre)
+	X = centre
+	Y = centre
 	coordinateList = [[None] * rowCol for i in range(rowCol)]
 
 	direction = 'l'
@@ -92,10 +93,73 @@ def process_image(imageList):
 
 	coordinateList[Y][X] = 999 # make sure the last corner has been accounted
 
-	# for i in coordinateList:
-	# 	for tmp in i:
-	# 		print('%2d ' % tmp, end = '')
-	# 	print()
+	print('Subimages in the order of')
+	for i in coordinateList:
+		for tmp in i:
+			print('%2d ' % tmp, end = '')
+		print()
+
+	return coordinateList
+
+def process_image_without_corner(imageList):
+	# Build up a concat map, assuming a sqaure layout
+	# This is for 4, 9, 16... subimages
+	totalSize = len(imageList)
+	rowCol = int(math.sqrt(totalSize))
+	centre = int(rowCol // 2)
+	# print(centre)
+	X = centre
+	Y = centre
+	coordinateList = [[None] * rowCol for i in range(rowCol)]
+
+	direction = 'l'
+	left, down, right, up = 1, 1, 2, 2
+	tmp = 0
+	j = 0
+
+	for i in range(1, totalSize):
+		
+		coordinateList[Y][X] = i - 1
+		# print(X, Y)
+
+		# Algorithm to generate mapping
+		# l for left, d for down, r for right, u for up
+		if direction == 'l':
+			X = X - 1
+			tmp += 1
+			if (tmp == left):
+				direction = 'd'
+				left = left + 2
+				tmp = 0
+		elif direction == 'u':
+			Y = Y - 1
+			tmp += 1
+			if (tmp == up):
+				direction = 'l'
+				up = up + 2
+				tmp = 0
+		elif direction == 'r':
+			X = X + 1
+			tmp += 1
+			if (tmp == right):
+				direction = 'u'
+				right = right + 2
+				tmp = 0
+		elif direction == 'd':
+			Y = Y + 1
+			tmp += 1
+			if (tmp == down):
+				direction = 'r'
+				down = down + 2
+				tmp = 0
+
+	coordinateList[Y][X] = totalSize - 1 # make sure the last corner has been accounted
+
+	print('Subimages in the order of')
+	for i in coordinateList:
+		for tmp in i:
+			print('%2d ' % tmp, end = '')
+		print()
 
 	return coordinateList
 
@@ -106,17 +170,28 @@ def main():
 	print('Loading images')
 	imageList = read_image(PATH)
 
-	totalSize = len(imageList) + 4
+	# Sanity check
+	isRoot = 0
+	testSize = len(imageList)
+	root = math.sqrt(testSize)
+	if (int(root + 0.5) ** 2 == testSize):
+		totalSize = testSize
+		isRoot = 1
+	else:
+		totalSize = testSize + 4
+	
 	rowCol = int(math.sqrt(totalSize))
 
 	# img = imageList[0]
 	# height, width = img.shape[:2]
 	# print(height, width)
-
-	coordinateList = process_image(imageList)
+	if isRoot:
+		coordinateList = process_image_without_corner(imageList)
+	else:
+		coordinateList = process_image(imageList)
 
 	imageHorizontalList = []
-	# concat image horizontally
+	# Concat image horizontally
 	for rowCount in range(0, rowCol):
 		
 		if (coordinateList[rowCount][0] == 999):
@@ -137,7 +212,7 @@ def main():
 		imageHorizontalList.append(img)
 		# print('debug')
 
-	# concat long image into a square image, concat vertically
+	# Concat long image into a square image, concat vertically
 	img = imageHorizontalList[0]
 	for rowCount in range(1, len(imageHorizontalList)):
 		imgNew = imageHorizontalList[rowCount]
