@@ -1,5 +1,7 @@
 ### Written By Youchao Wang, yw479
 ### 2019.12.14
+### Modified 2019.12.16
+
 import os
 import shutil
 import math
@@ -16,16 +18,24 @@ PICTURE_CHANNEL = 'd0'
 # Initializing environment
 
 def initialize():
+	# Sanity check
+	if not os.listdir(PATH):
+		print("Directory is empty, aborting")
+		quit()
+
+	# Create output folder
 	if os.path.exists('output/'):
 		shutil.rmtree('output/')
 	if not os.path.exists('output/'):
 		os.makedirs('output/')
 
+	# Create sorted subimages folder
 	if os.path.exists(PICTURE_NUMBER + PICTURE_CHANNEL + '/'):
 		shutil.rmtree(PICTURE_NUMBER + PICTURE_CHANNEL + '/')
 	if not os.path.exists(PICTURE_NUMBER + PICTURE_CHANNEL + '/'):
 		os.makedirs(PICTURE_NUMBER + PICTURE_CHANNEL + '/')
 
+	# Copy subimages
 	for filename in glob.glob(PATH + '*' + PICTURE_NUMBER + '*' + PICTURE_CHANNEL + '.TIFF'):
 		shutil.copy(filename, PICTURE_NUMBER + PICTURE_CHANNEL + '/')
 
