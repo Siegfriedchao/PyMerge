@@ -8,7 +8,7 @@ import numpy as np
 import cv2 as cv
 
 # Please set the following parameters
-PATH = 'test/'
+PATH = 'images/'
 OUTPUT_PATH = 'output/'
 PICTURE_NUMBER = 'A01'
 PICTURE_CHANNEL = 'd0'
@@ -16,10 +16,16 @@ PICTURE_CHANNEL = 'd0'
 # Initializing environment
 
 def initialize():
+	if os.path.exists('output/'):
+		shutil.rmtree('output/')
 	if not os.path.exists('output/'):
 		os.makedirs('output/')
+
+	if os.path.exists(PICTURE_NUMBER + PICTURE_CHANNEL + '/'):
+		shutil.rmtree(PICTURE_NUMBER + PICTURE_CHANNEL + '/')
 	if not os.path.exists(PICTURE_NUMBER + PICTURE_CHANNEL + '/'):
 		os.makedirs(PICTURE_NUMBER + PICTURE_CHANNEL + '/')
+
 	for filename in glob.glob(PATH + '*' + PICTURE_NUMBER + '*' + PICTURE_CHANNEL + '.TIFF'):
 		shutil.copy(filename, PICTURE_NUMBER + PICTURE_CHANNEL + '/')
 
