@@ -14,7 +14,7 @@ PATH = 'images/'
 OUTPUT_PATH = 'output/'
 PICTURE_NUMBER = 'A01'
 PICTURE_CHANNEL = 'd0'
-DIRECTION_FLAG = 'anticlockwise' # anticlockwise or clockwise
+DIRECTION_FLAG = 'anticlockwise' # 'anticlockwise' or 'clockwise'
 
 # Initializing environment
 

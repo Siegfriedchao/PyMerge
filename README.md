@@ -18,6 +18,7 @@ Written in Python 64-bit version `3.7.4` with `OpenCV2`
 	OUTPUT_PATH = 'output/'
 	PICTURE_NUMBER = 'A02'
 	PICTURE_CHANNEL = 'd1'
+	DIRECTION_FLAG = 'anticlockwise' # 'anticlockwise' or 'clockwise'
 ```
 
 `PATH` is the directory where you will need to put your images. No file clean-ups need
@@ -29,6 +30,9 @@ to be done as this python tool automatically picks out the subimages you need.
 of `A01`, `A02`, etc.
 
 `PICTURE_CHANNEL` refers to the channel (visible and IR spectrum?).
+
+Properly select the algorithm by setting up the direction flag `DIRECTION_FLAG`, type either
+`anticlockwise` or `clockwise`
 
 Please make sure these are set appropriately.
 
