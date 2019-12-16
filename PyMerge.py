@@ -10,7 +10,7 @@ import numpy as np
 import cv2 as cv
 
 # Please set the following parameters
-PATH = 'test/'
+PATH = 'images/'
 OUTPUT_PATH = 'output/'
 PICTURE_NUMBER = 'A01'
 PICTURE_CHANNEL = 'd0'
@@ -320,7 +320,7 @@ def main():
 		# print(heightTest, widthTest)
 
 	print('Generating image')
-	cv.imwrite(OUTPUT_PATH + PICTURE_NUMBER + PICTURE_CHANNEL + '.TIFF', img) 
+	cv.imwrite(OUTPUT_PATH + PICTURE_NUMBER + PICTURE_CHANNEL + 'pic_' + str(testSize) + '.TIFF', img) 
 
 	print('Complete')
 
