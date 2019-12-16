@@ -14,7 +14,7 @@ PATH = 'test/'
 OUTPUT_PATH = 'output/'
 PICTURE_NUMBER = 'A01'
 PICTURE_CHANNEL = 'd0'
-DIRECTION_FLAG = 'clockwise' # anticlockwise or clockwise
+DIRECTION_FLAG = 'anticlockwise' # anticlockwise or clockwise
 
 # Initializing environment
 
@@ -25,8 +25,6 @@ def initialize():
 		quit()
 
 	# Create output folder
-	if os.path.exists('output/'):
-		shutil.rmtree('output/')
 	if not os.path.exists('output/'):
 		os.makedirs('output/')
 
