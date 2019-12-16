@@ -8,6 +8,8 @@ You will need to install OpenCV for python. Use `pip` to install the package.
 	pip install --user opencv-python
 ```
 
+Written in Python 64-bit version `3.7.4` with `OpenCV2`
+
 ## How to use
 
 ```
