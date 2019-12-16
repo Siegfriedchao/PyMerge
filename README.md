@@ -33,3 +33,17 @@ of `A01`, `A02`, etc.
 Please make sure these are set appropriately.
 
 All other operations will be done automatically.
+
+## Screenshots
+
+The original subimages:
+![](./screenshot/origin.PNG)
+
+Automatically sorted subimages:
+![](./screenshot/sorted.PNG)
+
+Output with 20 subimages and auto-filled corners:
+![](./screenshot/output1.PNG)
+
+Output with 9 subimages
+![](./screenshot/output2.PNG)

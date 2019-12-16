@@ -8,7 +8,7 @@ import numpy as np
 import cv2 as cv
 
 # Please set the following parameters
-PATH = 'images/'
+PATH = 'test/'
 OUTPUT_PATH = 'output/'
 PICTURE_NUMBER = 'A01'
 PICTURE_CHANNEL = 'd0'
